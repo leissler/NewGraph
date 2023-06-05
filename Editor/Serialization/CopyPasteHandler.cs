@@ -1,7 +1,8 @@
-using OdinSerializer;
 using System.Collections.Generic;
+using Sirenix.Serialization;
 using UnityEditor;
 using UnityEngine;
+using SerializationUtility = Sirenix.Serialization.SerializationUtility;
 
 namespace NewGraph {
     /// <summary>
@@ -181,8 +182,8 @@ namespace NewGraph {
         private NodeModel DeepClone(NodeModel original) {
             List<Object> unityObjects;
             // this is the most brute force approach, but it has the benefit that we can really deepclone everything right out of the box.
-            byte[] serializedNode = OdinSerializer.SerializationUtility.SerializeValueWeak(original, DataFormat.Binary, out unityObjects);
-            return OdinSerializer.SerializationUtility.DeserializeValueWeak(serializedNode, DataFormat.Binary, unityObjects) as NodeModel;
+            byte[] serializedNode = SerializationUtility.SerializeValueWeak(original, DataFormat.Binary, out unityObjects);
+            return SerializationUtility.DeserializeValueWeak(serializedNode, DataFormat.Binary, unityObjects) as NodeModel;
         }
 
         /// <summary>
