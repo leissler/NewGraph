@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -30,7 +33,7 @@ namespace NewGraph {
         private EventModifiers lastModifiers;
         private EventType eventType;
         public GraphController graphController;
-
+        
 		public static VisualElement root => window.rootVisualElement;
 
 		public static Type currentWindowType = null;
@@ -89,6 +92,8 @@ namespace NewGraph {
             GlobalKeyEventHandler.OnKeyEvent -= HandleGlobalKeyPressEvents;
             GlobalKeyEventHandler.OnKeyEvent += HandleGlobalKeyPressEvents;
         }
+        
+        public void SetWindowTitle(string title) => titleContent.text = title;
 
         private void HandleGlobalKeyPressEvents(Event evt) {
             if (evt.isKey && mouseOverWindow == this && hasFocus) {
@@ -166,6 +171,9 @@ namespace NewGraph {
             if (Settings.customStylesheet != null) {
                 rootVisualElement.styleSheets.Add(Settings.customStylesheet);
             }
+            
+            ToolbarButton saveButton = rootVisualElement.Query<ToolbarButton>("saveButton").First();
+            saveButton.clickable.clicked += Save;
 
             // delay loading the last graph to the next frame
             // otherwise this method will be called before loadRequested could be set
@@ -175,7 +183,14 @@ namespace NewGraph {
                 }
                 loadRequested = false;
             });
+        }
 
+        public static async Task<GraphWindow> OpenWindowAsync()
+        {
+            GraphWindow window = GetWindow<GraphWindow>(true);
+            while(window.graphController.isGraphLoaded == false)
+                await Task.Delay(100);
+            return window;
         }
     }
 }

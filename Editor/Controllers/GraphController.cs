@@ -25,6 +25,8 @@ namespace NewGraph {
         private EdgeDropMenu edgeDropMenu;
         private Dictionary<Actions, Action<object>> internalActions;
         private Dictionary<object, NodeView> dataToViewLookup = new Dictionary<object, NodeView>();
+        
+        public bool isGraphLoaded { get; protected set; }
 
         public Vector2 GetViewScale() {
             return graphView.GetCurrentScale();
@@ -367,10 +369,8 @@ namespace NewGraph {
         /// Create a new node for the graph simply based on a valid type.
         /// </summary>
         /// <param name="nodeType">The node type.</param>
-        public NodeView CreateNewNode(Type nodeType, bool isUtilityNode = false) {
-            // get the current view position of the mouse, so we can display the new node at the tip of the mouse...
-            Vector2 viewPosition = graphView.GetMouseViewPosition();
-
+        public NodeView CreateNewNode(Type nodeType, bool isUtilityNode = false) => CreateNewNode(nodeType, graphView.GetMouseViewPosition(), isUtilityNode);
+        public NodeView CreateNewNode(Type nodeType, Vector2 position, bool isUtilityNode = false) {
             // create a new instance of the give node type
             INode node = Activator.CreateInstance(nodeType) as INode;
             NodeModel nodeItem = graphData.AddNode(node, isUtilityNode);
@@ -378,7 +378,7 @@ namespace NewGraph {
             nodeItem.SetData(graphData.GetLastAddedNodeProperty(isUtilityNode));
 
             // create the actual node controller & add its view to this graph
-            NodeController nodeController = new NodeController(nodeItem, this, viewPosition);
+            NodeController nodeController = new NodeController(nodeItem, this, position);
             graphView.AddElement(nodeController.nodeView);
             nodeController.Initialize();
 
@@ -510,6 +510,7 @@ namespace NewGraph {
 
                 isLoading = false;
 				OnGraphLoaded?.Invoke(this.graphData);
+                isGraphLoaded = true;
 
 				Logger.Log("data loaded");
             });

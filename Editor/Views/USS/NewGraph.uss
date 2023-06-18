@@ -242,6 +242,11 @@ PortListView > ScrollView {
     align-self: center;
 }
 
+.baseGraphEditor Button.convertTriggerButton {
+    width: 210px;
+    align-self: center;
+}
+
 #commandPanel Button Image, .baseGraphEditor Button.openGraphButton Image{
     width: 20px;
     height: 20px;

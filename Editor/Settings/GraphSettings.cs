@@ -130,7 +130,7 @@ namespace NewGraph {
         public Color colorUnselected = new(146 / 255f, 146 / 255f, 146 / 255f);
         public Color defaultNodeColor;
         public string defaultLabelForPortListItems = "Empty";
-        public string defaultInputName = "input";
+        public string defaultInputName = "";
         [Range(150, 400)]
         public int nodeWidth = 300;
         [Range(150, 400)]

@@ -38,6 +38,8 @@ namespace NewGraph {
         private string name;
         public const string nameIdentifier = nameof(name);
         
+        public bool isExpanded = true;
+        
         /// <summary>
         /// Is this node a utility node?
         /// </summary>

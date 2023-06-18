@@ -328,7 +328,7 @@ namespace NewGraph {
         }
 
         private void SettingsChanged() {
-            style.width = Settings.nodeWidth;
+            //style.width = Settings.nodeWidth;
         }
     }
 }
