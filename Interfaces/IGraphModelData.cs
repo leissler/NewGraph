@@ -24,7 +24,6 @@ namespace NewGraph {
         public SerializedProperty GetTmpNameProperty();
         public SerializedProperty GetOriginalNameProperty();
         public SerializedProperty GetLastAddedNodeProperty(bool isUtilityNode);
-
 #endif
     }
 }

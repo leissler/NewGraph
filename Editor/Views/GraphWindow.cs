@@ -171,25 +171,23 @@ namespace NewGraph {
             if (Settings.customStylesheet != null) {
                 rootVisualElement.styleSheets.Add(Settings.customStylesheet);
             }
-            
-            ToolbarButton saveButton = rootVisualElement.Query<ToolbarButton>("saveButton").First();
-            saveButton.clickable.clicked += Save;
 
             // delay loading the last graph to the next frame
             // otherwise this method will be called before loadRequested could be set
             rootVisualElement.schedule.Execute(() =>{
                 if (!loadRequested) {
-                    LoadGraph(); 
-                }
+                    LoadGraph();
+                } 
                 loadRequested = false;
             });
         }
 
+
         public static async Task<GraphWindow> OpenWindowAsync()
         {
-            GraphWindow window = GetWindow<GraphWindow>(true);
-            while(window.graphController.isGraphLoaded == false)
-                await Task.Delay(100);
+            GraphWindow window = GetWindow<GraphWindow>(false);
+            //while(window.graphController.isGraphLoaded == false)
+                //await Task.Delay(100);
             return window;
         }
     }

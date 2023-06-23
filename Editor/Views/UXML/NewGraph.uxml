@@ -1,9 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:VisualElement name="nodeGraphRoot" style="height: auto; width: auto; flex-grow: 1; flex-direction: column; flex-wrap: wrap;">
-        <uie:Toolbar name="toolbar" style="position: relative; width: 100%; min-width: initial; min-height: initial; flex-direction: row-reverse;">
-            <uie:ToolbarToggle focusable="false" label="Auto Save" value="true" name="toggleAutoSave" style="-unity-text-align: middle-center;" />
-            <uie:ToolbarButton text="Save" display-tooltip-when-elided="true" name="saveButton" style="-unity-text-align: middle-center;" clickable="ManualSave"/>
-        </uie:Toolbar>
         <ui:VisualElement name="graphViewRoot" style="flex-direction: column; flex-wrap: nowrap; flex-grow: 1; flex-basis: auto;" />
         <ui:VisualElement name="inspectorRoot" style="flex-grow: 1; max-width: 200px; min-width: 200px; visibility: hidden; display: none;">
             <ui:VisualElement name="commandPanel">
