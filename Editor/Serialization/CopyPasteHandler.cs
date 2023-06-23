@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Sirenix.Serialization;
+using OdinSerializer;
 using UnityEditor;
 using UnityEngine;
-using SerializationUtility = Sirenix.Serialization.SerializationUtility;
+using SerializationUtility = OdinSerializer.SerializationUtility;
 
 namespace NewGraph {
     /// <summary>
