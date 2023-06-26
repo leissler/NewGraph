@@ -33,6 +33,7 @@ namespace NewGraph {
         private EventModifiers lastModifiers;
         private EventType eventType;
         public GraphController graphController;
+        public Action OnWindowLoaded;
         
 		public static VisualElement root => window.rootVisualElement;
 
@@ -177,6 +178,7 @@ namespace NewGraph {
             rootVisualElement.schedule.Execute(() =>{
                 if (!loadRequested) {
                     LoadGraph();
+                    OnWindowLoaded?.Invoke();
                 } 
                 loadRequested = false;
             });

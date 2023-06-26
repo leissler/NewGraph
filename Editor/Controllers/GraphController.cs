@@ -466,6 +466,8 @@ namespace NewGraph {
                         // find the acompanying nodeData serializedProperty and set it...
                         SerializedProperty nodeSerializedData = nodesProperty.GetArrayElementAtIndex(i);
                         node.SetData(nodeSerializedData);
+                        
+                        if(dataToViewLookup.ContainsKey(node.nodeData)) continue;
 
                         // create a node controller for this node...
                         NodeController nodeController = new NodeController(node, this);
