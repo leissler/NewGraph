@@ -63,15 +63,15 @@ namespace NewGraph {
             //this.Unbind();
 
             foreach (BaseNode node in ContentContainer.Nodes) {
-                node.RemoveFromHierarchy();
+                node?.RemoveFromHierarchy();
             }
 
             foreach (BasePort port in ContentContainer.Ports) {
-                port.RemoveFromHierarchy();
+                port?.RemoveFromHierarchy();
             }
 
             foreach (BaseEdge edge in ContentContainer.Edges) {
-                edge.RemoveFromHierarchy();
+                edge?.RemoveFromHierarchy();
             }
         }
 

@@ -71,9 +71,9 @@ namespace NewGraph {
             nodeView.style.width = width;
             nodeView.style.height = height;
             nodeView.AddToClassList(nameof(CommentNode));
-            nodeView.ExtensionContainer.RemoveFromHierarchy();
-            nodeView.InputContainer.RemoveFromHierarchy();
-            nodeView.OutputContainer.RemoveFromHierarchy();
+            nodeView.ExtensionContainer?.RemoveFromHierarchy();
+            nodeView.InputContainer?.RemoveFromHierarchy();
+            nodeView.OutputContainer?.RemoveFromHierarchy();
             nodeView.RegisterCallback<MouseDownEvent>(OnNodeViewMouseDown);
             nodeView.RegisterCallback<MouseUpEvent>(OnMouseUp);
 

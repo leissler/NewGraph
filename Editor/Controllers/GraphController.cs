@@ -289,10 +289,10 @@ namespace NewGraph {
             if (isDirty) {
                 // unbind and reload this graph to avoid serialization issues...
                 graphView.Unbind();
-                //graphView.schedule.Execute(() => {
                 graphData.RemoveNodes(nodesToRemove);
-                Reload();
-                //});
+                graphView.schedule.Execute(() => {
+                    Reload();
+                });
             }
 
         }
@@ -348,7 +348,7 @@ namespace NewGraph {
         /// </summary>
         public void Reload() {
             Logger.Log("reload");
-            if (graphData != null /*&& graphData.BaseObject != null*/) {
+            if (graphData != null && graphData.BaseObject != null) {
                 Load(graphData);
             }
         }

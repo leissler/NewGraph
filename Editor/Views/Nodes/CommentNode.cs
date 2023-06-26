@@ -17,9 +17,9 @@ namespace NewGraph {
 
             // comment node is a very special snowflake... :D
             // So: We completely remove all the default ui
-            nodeView.ExtensionContainer.RemoveFromHierarchy();
-            nodeView.InputContainer.RemoveFromHierarchy();
-            nodeView.OutputContainer.RemoveFromHierarchy();
+            nodeView.ExtensionContainer?.RemoveFromHierarchy();
+            nodeView.InputContainer?.RemoveFromHierarchy();
+            nodeView.OutputContainer?.RemoveFromHierarchy();
         }
 
         public bool ShouldColorizeBackground() {
