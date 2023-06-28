@@ -1,6 +1,8 @@
 ﻿using GraphViewBase;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using OdinSerializer.Utilities;
 using UnityEditor;
 
 namespace NewGraph {
@@ -55,13 +57,18 @@ namespace NewGraph {
             }
         }
 
-        public void Reset() {
-			// set its value to null = remove reference
-			if (boundProperty != null) {
-				boundProperty.managedReferenceValue = null;
-				boundProperty.serializedObject.ApplyModifiedProperties();
-				connectionChangedCallback?.Invoke();
-			}
+        public void Reset()
+        {
+            // set its value to null = remove reference
+            if (boundProperty == null) return;
+            boundProperty.managedReferenceValue = null;
+            boundProperty.serializedObject.ApplyModifiedProperties();
+            Connections.ToList().ForEach((connection) => {
+                connection.RemoveFromHierarchy();
+                Disconnect(connection);
+            });
+            connectionChangedCallback?.Invoke();
+            
         }
 
         public override bool CanConnectTo(BasePort other, bool ignoreCandidateEdges = true) {
