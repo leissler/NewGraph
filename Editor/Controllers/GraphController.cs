@@ -249,7 +249,6 @@ namespace NewGraph {
                 // get the ouput port, this is where the referenced node sits
                 PortView outputPort = edge.GetOutputPort() as PortView;
                 outputPort?.Reset();
-                edge.RemoveFromHierarchy();
             });
 
             // go over every selected node and build a list of nodes that should be deleted....
@@ -270,7 +269,7 @@ namespace NewGraph {
                     if (basePort.Direction != Direction.Output) return;
                     PortView port = basePort as PortView;
                     // check that the port actually is not empty...
-                    if (port?.boundProperty?.managedReferenceValue == null) return;
+                    if (port == null || port.boundProperty == null || port.boundProperty.managedReferenceValue == null) return;
                     // loop over the list of nodes that should be removed...
                     foreach (NodeModel nodeToRemove in nodesToRemove)
                     {
@@ -278,9 +277,6 @@ namespace NewGraph {
                         if (nodeToRemove.nodeData != port.boundProperty.managedReferenceValue) continue;
                         // reset / nullify the port value to we don't have invisible nodes in our graph...
                         port.Reset();
-                        basePort.Connections.ForEach((connection) => {
-                            connection.RemoveFromHierarchy();
-                        });
                         break;
                     }
                 });
