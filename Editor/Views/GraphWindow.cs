@@ -185,12 +185,6 @@ namespace NewGraph {
         }
 
 
-        public static async Task<GraphWindow> OpenWindowAsync()
-        {
-            GraphWindow window = GetWindow<GraphWindow>(false);
-            //while(window.graphController.isGraphLoaded == false)
-                //await Task.Delay(100);
-            return window;
-        }
+        public static GraphWindow OpenWindow() => GetWindow<GraphWindow>(false);
     }
 }
