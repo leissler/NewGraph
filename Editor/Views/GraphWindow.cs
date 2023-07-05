@@ -124,6 +124,12 @@ namespace NewGraph {
         private void OnGUI() {
             graphController?.Draw();
         }
+        
+        public void RedrawSelectedNode() {
+            graphController?.graphView.ForEachSelectedNodeDo(n => 
+                n.MarkDirtyRepaint()
+            );
+        }
 
         private void OnDisable() {
             //graphController?.Disable();
