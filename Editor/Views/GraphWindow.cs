@@ -138,7 +138,7 @@ namespace NewGraph {
             loadRequested = false;
         }
 
-        public static void LoadGraph(IGraphModelData graph =null) {
+        public static GraphWindow LoadGraph(IGraphModelData graph =null) {
             if (graph != null) {
                 SetLastOpenedGraphData(graph);
             } else {
@@ -163,6 +163,7 @@ namespace NewGraph {
             }
 
             loadRequested = true;
+            return window;
         }
 
         private void CreateGUI() {

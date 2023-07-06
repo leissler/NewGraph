@@ -11,7 +11,7 @@ namespace NewGraph {
     /// </summary>
     public class MonoGraphModel : MonoBehaviour, IGraphModelData {
         [SerializeField, HideInInspector]
-        private GraphModelBase baseModel;
+        private GraphModelBase baseModel = new();
 
         [SerializeField, HideInInspector]
         private int id;
