@@ -81,7 +81,7 @@ namespace NewGraph {
             }
             if (window == null) {
                 CurrentWindowType = windowType;
-                window = GetWindow<GraphWindow>(Settings.windowName);
+                window = GetWindow<GraphWindow>(Settings.windowName, typeof(SceneView));
                 window.wantsMouseMove = true;
                 window.Show();
             }
