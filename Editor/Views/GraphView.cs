@@ -129,6 +129,12 @@ namespace NewGraph {
                 callback(edge);
             }
         }
+        
+        public void ForEachEdgeDo(Action<BaseEdge> callback) {
+            foreach (BaseEdge edge in ContentContainer.Edges) {
+                callback(edge);
+            }
+        }
 
         public override void OnActionExecuted(Actions actionType, object data = null) {
             OnAction(actionType, data);

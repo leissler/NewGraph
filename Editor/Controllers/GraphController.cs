@@ -252,37 +252,23 @@ namespace NewGraph {
             });
 
             // go over every selected node and build a list of nodes that should be deleted....
-            List<NodeModel> nodesToRemove = new List<NodeModel>();
             graphView.ForEachSelectedNodeDo((node) => {
                 NodeView scopedNodeView = node as NodeView;
                 if (scopedNodeView == null) return;
-                nodesToRemove.Add(scopedNodeView.controller.nodeItem);
+                graphData.RemoveNode(scopedNodeView.controller.nodeItem);
                 node.RemoveFromHierarchy();
-            });
-
-            // if we have nodes marked for deletion...
-            if (nodesToRemove.Count > 0) {
-                // tidy up all ports before actual deletion...
-                graphView.ForEachPortDo((basePort) =>
+                graphView.ForEachEdgeDo((edge) =>
                 {
-                    // we can ignore input ports, so check that we only operate on output ports...
-                    if (basePort.Direction != Direction.Output) return;
-                    PortView port = basePort as PortView;
-                    // check that the port actually is not empty...
-                    if (port == null || port.boundProperty == null || port.boundProperty.managedReferenceValue == null) return;
-                    // loop over the list of nodes that should be removed...
-                    foreach (NodeModel nodeToRemove in nodesToRemove)
+                    Edge e = edge as Edge;
+                    if (e?.GetOutputPort().ParentNode == node || e?.GetInputPort().ParentNode == node)
                     {
-                        // if the ports actual object value is equal to a node that should be removed...
-                        if (nodeToRemove.nodeData != port.boundProperty.managedReferenceValue) continue;
-                        // reset / nullify the port value to we don't have invisible nodes in our graph...
-                        port.Reset();
-                        break;
+                        e.GetInputPort().Disconnect(e);
+                        e.GetOutputPort().Disconnect(e);
+                        e.RemoveFromHierarchy();
                     }
+                        
                 });
-            }
-            
-            graphData.RemoveNodes(nodesToRemove);
+            });
         }
 
         /// <summary>
