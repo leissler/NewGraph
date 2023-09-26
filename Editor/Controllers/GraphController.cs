@@ -344,13 +344,12 @@ namespace NewGraph {
         /// </summary>
         /// <param name="nodeType">The node type.</param>
         public NodeView CreateNewNode(Type nodeType, bool isUtilityNode = false) => CreateNewNode(nodeType, graphView.GetMouseViewPosition(), isUtilityNode);
-        public NodeView CreateNewNode(Type nodeType, Vector2 position, bool isUtilityNode = false) {
-            // create a new instance of the give node type
-            INode node = Activator.CreateInstance(nodeType) as INode;
-            NodeModel nodeItem = graphData.AddNode(node, isUtilityNode);
-
-            nodeItem.SetData(graphData.GetLastAddedNodeProperty(isUtilityNode));
-
+        public NodeView CreateNewNode(Type nodeType, Vector2 position, bool isUtilityNode = false) =>  CreateNewNode(Activator.CreateInstance(nodeType) as INode, position, isUtilityNode);
+        public NodeView CreateNewNode(INode nodeData, bool isUtilityNode = false) => CreateNewNode(nodeData, graphView.GetMouseViewPosition(), isUtilityNode);
+        public NodeView CreateNewNode(INode nodeData, Vector2 position, bool isUtilityNode = false)
+        {
+            NodeModel nodeItem = graphData.AddNode(nodeData, isUtilityNode);
+            
             // create the actual node controller & add its view to this graph
             NodeController nodeController = new NodeController(nodeItem, this, position);
             graphView.AddElement(nodeController.nodeView);
