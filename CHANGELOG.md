@@ -158,7 +158,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.6] - 2023-03-14
 ### Fixed
 - Removed unnecessary frame delay when reloading a graph [#2](https://github.com/Gentlymad-Studios/NewGraph/issues/2)
-- Removed Unbind call when clearing a graph 
+- Removed Unbind call when clearing a graph
 - PortListView entries will now update their name, if the referenced node name is changed
 
 ## [0.2.7] - 2023-03-15
@@ -230,3 +230,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed Frame action being triggerd while in an editable VisualElement. Fixes: [#27](https://github.com/Gentlymad-Studios/NewGraph/issues/27)
 ### Added
 - Added customization of the hierarchical layer for GroupCommentNodes. Fixes: [#25](https://github.com/Gentlymad-Studios/NewGraph/issues/25)
+
+## [0.4.0] - 2023-07-10
+### Fixed
+- Fixed removing entire nodes when hitting the delete key while an input field was focussed.
+
+## [0.4.1] - 2023-08-21
+### Fixed
+- Fixed GraphDisplayAttribute createGroup behavior
