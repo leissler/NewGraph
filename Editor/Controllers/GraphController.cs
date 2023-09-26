@@ -349,6 +349,7 @@ namespace NewGraph {
         public NodeView CreateNewNode(INode nodeData, Vector2 position, bool isUtilityNode = false)
         {
             NodeModel nodeItem = graphData.AddNode(nodeData, isUtilityNode);
+            nodeItem.SetData(graphData.GetLastAddedNodeProperty(isUtilityNode));
             
             // create the actual node controller & add its view to this graph
             NodeController nodeController = new NodeController(nodeItem, this, position);
