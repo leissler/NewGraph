@@ -137,21 +137,6 @@ namespace NewGraph {
             return null;
         }
 
-        public void Disable() {
-            EnsureSerialization();
-        }
-
-        /// <summary>
-        /// Ensure that every change is written to disk.
-        /// </summary>
-        public void EnsureSerialization() {
-            if (graphData != null && graphData.SerializedGraphData != null) {
-                Logger.Log("save");
-                graphData.ForceSerializationUpdate();
-                AssetDatabase.SaveAssets();
-            }
-        }
-
         /// <summary>
         /// Called when "something" was selected in this graph
         /// </summary>
@@ -165,7 +150,7 @@ namespace NewGraph {
                 inspector.SetSelectedNodeInfoActive(selectedNodesCount, graphView.GetSelectedEdgesCount(), true);
             } else if(selectedNodesCount > 0) {
                 NodeView selectedNode = graphView.GetFirstSelectedNode() as NodeView;
-                inspector.SetInspectorContent(selectedNode.GetInspectorContent(), graphData.SerializedGraphData);
+                inspector.SetInspectorContent(selectedNode.GetInspectorContent(), new SerializedObject(graphData.BaseObject));
             }
         }
 
@@ -244,6 +229,7 @@ namespace NewGraph {
         /// <param name="data"></param>
         public void OnDelete(object data = null) {
             
+            graphView.Unbind();
             // go over every selected edge...
             graphView.ForEachSelectedEdgeDo((edge) => {
                 // get the ouput port, this is where the referenced node sits
@@ -269,6 +255,8 @@ namespace NewGraph {
                         
                 });
             });
+            
+            Reload();
         }
 
         /// <summary>
@@ -400,10 +388,7 @@ namespace NewGraph {
 			if (isLoading) {
                 return;
             }
-
-            // make sure to save the old graphs state...
-            EnsureSerialization();
-
+            
             // signal we are in the process of loading...
             isLoading = true;
 
@@ -416,9 +401,6 @@ namespace NewGraph {
             // offload the actual loading to the next frame...
             graphView.schedule.Execute(() => {
                 this.graphData = graphData;
-                if (this.graphData.SerializedGraphData == null) {
-                    this.graphData.CreateSerializedObject();
-                }
 
                 // remember that this is our currently opened graph...
                 SetLastOpenedGraphData(this.graphData);
@@ -451,14 +433,6 @@ namespace NewGraph {
                         dataToViewLookup.Add(node.nodeData, nodeController.nodeView);
                     }
                 }
-
-                // find the nodes property of the loaded graphData
-                SerializedProperty nodesProperty = this.graphData.GetNodesProperty(false);
-                ForEachNodeProperty(this.graphData.Nodes, nodesProperty);
-
-                // find the nodes property of the loaded graphData
-                SerializedProperty utilitiyNodesProperty = this.graphData.GetNodesProperty(true);
-                ForEachNodeProperty(this.graphData.UtilityNodes, utilitiyNodesProperty);
 
                 // draw all port connections...
                 // this does not happen automatically as we need to call ConnectPorts...

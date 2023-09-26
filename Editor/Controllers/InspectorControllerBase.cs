@@ -191,7 +191,6 @@ namespace NewGraph {
                 UnityEngine.Object graph = EditorGUIUtility.GetObjectPickerObject();
                 if (graph != null) {
                     IGraphModelData graphModelData = graph as IGraphModelData;
-                    graphModelData.CreateSerializedObject();
                     CreateRenameGraphUI(graphModelData);
                     Clear();
                     OnShouldLoadGraph?.Invoke(graphModelData);

@@ -27,9 +27,6 @@ namespace NewGraph {
 
         protected virtual void CreateGUI(VisualElement inspector) {
 			IGraphModelData baseGraphModel = target as IGraphModelData;
-			if (baseGraphModel.SerializedGraphData == null) {
-				baseGraphModel.CreateSerializedObject();
-			}
 
 			VisualElement MakeItem() {
 				VisualElement itemRow = new VisualElement();

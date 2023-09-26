@@ -23,15 +23,6 @@ namespace NewGraph {
 
         public List<NodeModel> UtilityNodes => baseModel.utilityNodes;
 
-        public SerializedObject SerializedGraphData {
-            get {
-                if (baseModel.serializedGraphData == null) {
-                    CreateSerializedObject();
-                }
-                return baseModel.serializedGraphData;
-            }
-        }
-
         public bool ViewportInitiallySet => baseModel.ViewportInitiallySet;
 
         public Vector3 ViewPosition => baseModel.ViewPosition;
@@ -41,14 +32,16 @@ namespace NewGraph {
         public UnityEngine.Object BaseObject {
             get {
                 if (baseModel.baseObject == null) {
-                    CreateSerializedObject();
+                    baseModel.baseObject = this;
                 }
                 return baseModel.baseObject;
             }
         }
 
         public string GUID => CreateID().ToString();
-
+        public INode lastNode;
+        public INode lastUtilityNode;
+        
         public NodeModel AddNode(INode node, bool isUtilityNode) {
             return baseModel.AddNode(node, isUtilityNode, this);
         }
@@ -57,29 +50,9 @@ namespace NewGraph {
             return baseModel.AddNode(nodeItem);
         }
 
-        public void CreateSerializedObject() {
-            baseModel.CreateSerializedObject(this, nameof(baseModel));
-        }
-
-        public void ForceSerializationUpdate() {
-            if (this != null) {
-                baseModel.ForceSerializationUpdate(this);
-            }
-        }
-
-        public SerializedProperty GetLastAddedNodeProperty(bool isUtilityNode) {
-            return baseModel.GetLastAddedNodeProperty(isUtilityNode);
-        }
-
-        public SerializedProperty GetNodesProperty(bool isUtilityNode) {
-            return baseModel.GetNodesProperty(isUtilityNode);
-        }
-
-        public SerializedProperty GetTmpNameProperty() {
-            return baseModel.GetTmpNameProperty();
-        }
-        public SerializedProperty GetOriginalNameProperty() {
-            return baseModel.GetOriginalNameProperty();
+        public void ForceSerializationUpdate()
+        {
+            baseModel.ForceSerializationUpdate(this);
         }
 
         public void RemoveNode(NodeModel node) {

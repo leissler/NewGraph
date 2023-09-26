@@ -20,12 +20,10 @@ namespace NewGraph {
     public class GraphWindow : EditorWindow {
 
         private static readonly Dictionary<Type, Type> inspectorControllerLookup = new Dictionary<Type, Type>() {
-            { typeof(ScriptableGraphModel), typeof(ScriptableInspectorController) },
             { typeof(MonoGraphModel), typeof(MonoInspectorController) },
         };
 
         private static readonly Dictionary<Type, Func<string, IGraphModelData>> lastGraphCreationStrategies = new Dictionary<Type, Func<string, IGraphModelData>>() {
-            { typeof(ScriptableGraphModel), ScriptableGraphModel.GetGraphData },
             { typeof(MonoGraphModel), MonoGraphModel.GetGraphData },
         };
 
@@ -112,9 +110,8 @@ namespace NewGraph {
         }
 
         public void LogPlayModeState(PlayModeStateChange state) {
-            if (state == PlayModeStateChange.ExitingPlayMode) {
-                graphController?.EnsureSerialization();
-            } else if (state == PlayModeStateChange.EnteredEditMode) {
+            if (state == PlayModeStateChange.ExitingPlayMode) { } 
+            else if (state == PlayModeStateChange.EnteredEditMode) {
                 LoadGraph();
             } else if (state == PlayModeStateChange.EnteredPlayMode) {
                 graphController?.Reload();
@@ -149,10 +146,6 @@ namespace NewGraph {
             }
 
             if (graph != null) {
-
-                if(graph.SerializedGraphData == null) {
-                    graph.CreateSerializedObject();
-                }
 
                 Type windowType = graph.BaseObject.GetType();
                 InitializeWindowBase(windowType);

@@ -29,9 +29,6 @@ namespace NewGraph {
             if (graphData == null) {
                 LastOpenedGraphInfo = null;
             } else {
-                if (graphData.SerializedGraphData == null) {
-                    graphData.CreateSerializedObject();
-                }
                 LastOpenedGraphInfo = new LastGraphInfo() {
                     graphType = graphData.BaseObject.GetType(),
                     GUID = graphData.GUID

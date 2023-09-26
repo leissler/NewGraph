@@ -7,8 +7,7 @@ namespace NewGraph {
         public List<NodeModel> Nodes { get; }
 #if UNITY_EDITOR
         public string GUID { get; }
-        public List<NodeModel> UtilityNodes { get; }
-        public SerializedObject SerializedGraphData { get; }
+        public List<NodeModel> UtilityNodes { get; } 
         public UnityEngine.Object BaseObject { get; }
         public bool ViewportInitiallySet { get; }
         public Vector3 ViewPosition { get; }
@@ -19,11 +18,6 @@ namespace NewGraph {
         public void RemoveNode(NodeModel node);
         public void RemoveNodes(List<NodeModel> nodesToRemove);
         public void ForceSerializationUpdate();
-        public void CreateSerializedObject();
-        public SerializedProperty GetNodesProperty(bool isUtilityNode);
-        public SerializedProperty GetTmpNameProperty();
-        public SerializedProperty GetOriginalNameProperty();
-        public SerializedProperty GetLastAddedNodeProperty(bool isUtilityNode);
 #endif
     }
 }
