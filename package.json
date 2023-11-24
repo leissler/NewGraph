@@ -1,6 +1,6 @@
 {
   "name": "com.gentlymad.newgraph",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "displayName": "NewGraph",
   "description": "A general data oriented node graph solution. This is build upon the idea to visualize complex data structures as graph networks without having to modify already established data classes, except adding [Node], [Port] and [SerializeReference] attributes to call classes that should show in the Graph View.",
   "unity": "2022.2",
@@ -20,5 +20,17 @@
     "name": "Gentlymad Studios",
     "email": "m.guntrum@gentlymadstudios.com",
     "url": "https://gentlymad.org"
-  }
+  },
+  "samples": [
+        {
+            "displayName": "WindowInitializer",
+            "description": "This sets you up with a menu to open the GraphWindow",
+            "path": "Samples~/WindowInitializer"
+        },
+        {
+            "displayName": "MonoGraphModel",
+            "description": "This showcases how you can create mono graph models",
+            "path": "Samples~/MonoGraphModel"
+        }
+    ]
 }
