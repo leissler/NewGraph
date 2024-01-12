@@ -169,6 +169,7 @@ namespace NewGraph {
 
         private void OnSelectionChange()
         {
+            Debug.Log("GraphWindow: Selection changed");
             OnSelectionChanged?.Invoke();
         }
         
