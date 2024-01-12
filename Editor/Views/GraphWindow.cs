@@ -34,6 +34,7 @@ namespace NewGraph {
         private EventType eventType;
         public GraphController graphController;
         public Action OnWindowLoaded;
+        public Action OnSelectionChanged;
         
 		public static VisualElement root => window.rootVisualElement;
 
@@ -166,6 +167,12 @@ namespace NewGraph {
             return window;
         }
 
+        private void OnSelectionChange()
+        {
+            Debug.Log("GraphWindow: Selection changed");
+            OnSelectionChanged?.Invoke();
+        }
+        
         private void CreateGUI() {
             VisualElement uxmlRoot = graphDocument.CloneTree();
             rootVisualElement.Add(uxmlRoot);
