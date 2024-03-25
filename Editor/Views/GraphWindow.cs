@@ -88,9 +88,19 @@ namespace NewGraph {
             }
         }
 
-        private void OnEnable() {
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void InitializeOnLoad()
+        {
+            Debug.Log("GraphWindow.InitializeOnLoad");
             EditorApplication.playModeStateChanged -= LogPlayModeState;
             EditorApplication.playModeStateChanged += LogPlayModeState;
+            //GlobalKeyEventHandler.OnKeyEvent -= HandleGlobalKeyPressEvents;
+            //GlobalKeyEventHandler.OnKeyEvent += HandleGlobalKeyPressEvents;
+        }
+        
+        private void OnEnable() {
+            //EditorApplication.playModeStateChanged -= LogPlayModeState;
+            //EditorApplication.playModeStateChanged += LogPlayModeState;
             GlobalKeyEventHandler.OnKeyEvent -= HandleGlobalKeyPressEvents;
             GlobalKeyEventHandler.OnKeyEvent += HandleGlobalKeyPressEvents;
         }
@@ -112,13 +122,25 @@ namespace NewGraph {
             }
         }
 
-        public void LogPlayModeState(PlayModeStateChange state) {
+        public static void LogPlayModeState(PlayModeStateChange state) {
             if (state == PlayModeStateChange.ExitingPlayMode) {
-                graphController?.EnsureSerialization();
+                window.graphController?.EnsureSerialization();
             } else if (state == PlayModeStateChange.EnteredEditMode) {
                 LoadGraph();
             } else if (state == PlayModeStateChange.EnteredPlayMode) {
-                graphController?.Reload();
+                
+                if (EditorSettings.enterPlayModeOptionsEnabled && 
+                    (
+                    (!EditorSettings.enterPlayModeOptions.HasFlag(EnterPlayModeOptions.DisableSceneReload)) &&
+                    (EditorSettings.enterPlayModeOptions.HasFlag(EnterPlayModeOptions.DisableDomainReload))
+                    ) 
+                )
+                {
+                    return;
+                }
+                
+                Debug.Log("---------------------Calling graphController.Reload");
+                window?.graphController?.Reload();
             }
         }
 
@@ -134,8 +156,8 @@ namespace NewGraph {
 
         private void OnDisable() {
             //graphController?.Disable();
-            GlobalKeyEventHandler.OnKeyEvent -= HandleGlobalKeyPressEvents;
-            EditorApplication.playModeStateChanged -= LogPlayModeState;
+            //GlobalKeyEventHandler.OnKeyEvent -= HandleGlobalKeyPressEvents;
+            //EditorApplication.playModeStateChanged -= LogPlayModeState;
             loadRequested = false;
         }
 
