@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,6 +34,7 @@ namespace NewGraph {
         private EventType eventType;
         public GraphController graphController;
         public Action OnWindowLoaded;
+        public Action OnSelectionChanged;
         
 		public static VisualElement root => window.rootVisualElement;
 
@@ -166,6 +167,11 @@ namespace NewGraph {
             return window;
         }
 
+        private void OnSelectionChange()
+        {
+            OnSelectionChanged?.Invoke();
+        }
+        
         private void CreateGUI() {
             VisualElement uxmlRoot = graphDocument.CloneTree();
             rootVisualElement.Add(uxmlRoot);
