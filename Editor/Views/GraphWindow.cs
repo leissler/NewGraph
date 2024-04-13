@@ -91,7 +91,7 @@ namespace NewGraph {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void InitializeOnLoad()
         {
-            Debug.Log("GraphWindow.InitializeOnLoad");
+            Logger.Log("GraphWindow.InitializeOnLoad");
             EditorApplication.playModeStateChanged -= LogPlayModeState;
             EditorApplication.playModeStateChanged += LogPlayModeState;
             //GlobalKeyEventHandler.OnKeyEvent -= HandleGlobalKeyPressEvents;
@@ -128,19 +128,13 @@ namespace NewGraph {
             } else if (state == PlayModeStateChange.EnteredEditMode) {
                 LoadGraph();
             } else if (state == PlayModeStateChange.EnteredPlayMode) {
-                
                 if (EditorSettings.enterPlayModeOptionsEnabled && 
-                    (
                     (!EditorSettings.enterPlayModeOptions.HasFlag(EnterPlayModeOptions.DisableSceneReload)) &&
                     (EditorSettings.enterPlayModeOptions.HasFlag(EnterPlayModeOptions.DisableDomainReload))
-                    ) 
                 )
                 {
-                    return;
+                    LoadGraph();
                 }
-                
-                Debug.Log("---------------------Calling graphController.Reload");
-                window?.graphController?.Reload();
             }
         }
 
@@ -179,6 +173,7 @@ namespace NewGraph {
 
                 Type windowType = graph.BaseObject.GetType();
                 InitializeWindowBase(windowType);
+                
                 window.graphController.OpenGraphExternal(graph);
 
             } else {
@@ -191,7 +186,6 @@ namespace NewGraph {
 
         private void OnSelectionChange()
         {
-            Debug.Log("GraphWindow: Selection changed");
             OnSelectionChanged?.Invoke();
         }
         
