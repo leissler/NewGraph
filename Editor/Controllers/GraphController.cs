@@ -252,10 +252,12 @@ namespace NewGraph {
 
 				// go over every selected node and build a list of nodes that should be deleted....
 				List<NodeModel> nodesToRemove = new List<NodeModel>();
+				List<NodeView> nodesViewsToRemove = new List<NodeView>();
 				graphView.ForEachSelectedNodeDo((node) => {
 					NodeView scopedNodeView = node as NodeView;
 					if (scopedNodeView != null) {
 						nodesToRemove.Add(scopedNodeView.controller.nodeItem);
+                        nodesViewsToRemove.Add(scopedNodeView);
 						isDirty = true;
 					}
 				});
@@ -286,10 +288,13 @@ namespace NewGraph {
 				// if we are dirty and objects were changed....
 				if (isDirty) {
 					// unbind and reload this graph to avoid serialization issues...
-					graphView.Unbind();
+					//graphView.Unbind();
 					//graphView.schedule.Execute(() => {
 					graphData.RemoveNodes(nodesToRemove);
-					Reload();
+                    foreach (NodeView node in nodesViewsToRemove) {
+                        node.parent.Remove(node);
+                    }
+					//Reload();
 					//});
 				}
 			}
