@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -169,7 +169,6 @@ namespace NewGraph {
 
         private void OnSelectionChange()
         {
-            Debug.Log("GraphWindow: Selection changed");
             OnSelectionChanged?.Invoke();
         }
         
