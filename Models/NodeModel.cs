@@ -186,6 +186,7 @@ namespace NewGraph {
             nodeDataSerializedProperty = serializedProperty.FindPropertyRelative(nameof(nodeData));
             nameProperty = serializedProperty.FindPropertyRelative(nameof(name));
             dataIsSet = true;
+            serializedProperty.serializedObject.ApplyModifiedProperties();
         }
 #endif
     }
