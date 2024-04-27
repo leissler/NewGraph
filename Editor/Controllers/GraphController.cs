@@ -137,10 +137,6 @@ namespace NewGraph {
             return null;
         }
 
-        public void Disable() {
-            EnsureSerialization();
-        }
-
         /// <summary>
         /// Ensure that every change is written to disk.
         /// </summary>

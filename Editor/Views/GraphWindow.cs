@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,7 +18,7 @@ namespace NewGraph {
     /// Contains a key down workaround to prevent an issue where key down events are passing through elements instead of bein received.
     /// https://forum.unity.com/threads/capturing-keydownevents-in-editorwindow-and-focus.762155/
     /// </summary>
-    public class GraphWindow : EditorWindow {
+    public class GraphWindow : GraphViewEditorWindow {
 
         private static readonly Dictionary<Type, Type> inspectorControllerLookup = new Dictionary<Type, Type>() {
             { typeof(ScriptableGraphModel), typeof(ScriptableInspectorController) },
@@ -78,6 +79,7 @@ namespace NewGraph {
 
         public static void InitializeWindowBase(Type windowType) {
             if (window != null && CurrentWindowType != windowType) {
+                window.graphController?.EnsureSerialization();
                 window.Close();
             }
             if (window == null) {
@@ -133,10 +135,15 @@ namespace NewGraph {
         }
 
         private void OnDisable() {
-            //graphController?.Disable();
+            graphController?.EnsureSerialization();
             GlobalKeyEventHandler.OnKeyEvent -= HandleGlobalKeyPressEvents;
             EditorApplication.playModeStateChanged -= LogPlayModeState;
             loadRequested = false;
+        }
+        
+        private void OnDestroy()
+        {
+            graphController?.EnsureSerialization();
         }
 
         public static GraphWindow LoadGraph(IGraphModelData graph =null) {
