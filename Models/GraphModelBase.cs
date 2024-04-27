@@ -47,52 +47,19 @@ namespace NewGraph {
 		private bool viewportInitiallySet = false;
         public bool ViewportInitiallySet => viewportInitiallySet;
 
-        private SerializedProperty viewportInitiallySetProperty = null;
-        private SerializedProperty ViewportInitiallySetProperty {
-            get {
-                if (viewportInitiallySetProperty == null) {
-                    viewportInitiallySetProperty = GetProperty(nameof(viewportInitiallySet));
-                }
-                return viewportInitiallySetProperty;
-            }
-        }
-
         [SerializeField, HideInInspector]
         private Vector3 viewPosition;
         public Vector3 ViewPosition => viewPosition;
-
-        [NonSerialized]
-        private SerializedProperty viewPositionProperty = null;
-        private SerializedProperty ViewPositionProperty {
-            get {
-                if (viewPositionProperty == null) {
-                    viewPositionProperty = GetProperty(nameof(viewPosition));
-                }
-                return viewPositionProperty;
-            }
-        }
 
         [SerializeField, HideInInspector]
         private Vector3 viewScale;
         public Vector3 ViewScale => viewScale;
 
-        [NonSerialized]
-        private SerializedProperty viewScaleProperty = null;
-        private SerializedProperty ViewScaleProperty {
-            get {
-                if (viewScaleProperty == null) {
-                    viewScaleProperty = GetProperty(nameof(viewScale));
-                }
-                return viewScaleProperty;
-            }
-        }
-
         public void SetViewport(Vector3 position, Vector3 scale) {
             if (position != viewPosition || scale != viewScale) {
-                ViewportInitiallySetProperty.boolValue = true;
-                ViewScaleProperty.vector3Value = scale;
-                ViewPositionProperty.vector3Value = position;
-                serializedGraphData.ApplyModifiedProperties();
+                viewScale = scale;
+                viewPosition = position;
+                viewportInitiallySet = true;
             }
         }
 
@@ -135,10 +102,10 @@ namespace NewGraph {
             }
         }
 
-        public void ForceSerializationUpdate(UnityEngine.Object scope) {
+        public void ForceSerializationUpdate(UnityEngine.Object scope){
             serializedGraphData.Update();
-            EditorUtility.SetDirty(scope);
             serializedGraphData.ApplyModifiedProperties();
+            EditorUtility.SetDirty(scope);
         }
 
         public void CreateSerializedObject(UnityEngine.Object scope, string rootFieldName) {
@@ -147,9 +114,6 @@ namespace NewGraph {
             serializedGraphData = new SerializedObject(scope);
             nodesProperty = null;
             utilityNodesProperty = null;
-            viewPositionProperty = null;
-            viewScaleProperty = null;
-            viewportInitiallySetProperty = null;
         }
 
         public SerializedProperty GetOriginalNameProperty() {
