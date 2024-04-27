@@ -88,10 +88,6 @@ namespace NewGraph {
         [NonSerialized]
         private SerializedProperty nameProperty;
         [NonSerialized]
-        private SerializedProperty nodeXProperty;
-        [NonSerialized]
-        private SerializedProperty nodeYProperty;
-        [NonSerialized]
         private static Dictionary<Type, NodeAttribute> nodeInfo = new Dictionary<Type, NodeAttribute>();
         [NonSerialized]
         public Type nodeType;
@@ -169,16 +165,8 @@ namespace NewGraph {
         }
 
         public void SetPosition(float positionX, float positionY) {
-            if (dataIsSet) {
-                if (positionX != nodeX || positionY != nodeY) {
-                    nodeXProperty.floatValue = positionX;
-                    nodeYProperty.floatValue = positionY;
-                    nodeXProperty.serializedObject.ApplyModifiedProperties();
-                }
-            } else {
-                nodeX = positionX;
-                nodeY = positionY;
-            }
+            nodeX = positionX;
+            nodeY = positionY;
         }
 
         public SerializedProperty GetSerializedProperty() {
@@ -197,8 +185,6 @@ namespace NewGraph {
             this.serializedProperty = serializedProperty;
             nodeDataSerializedProperty = serializedProperty.FindPropertyRelative(nameof(nodeData));
             nameProperty = serializedProperty.FindPropertyRelative(nameof(name));
-            nodeXProperty = serializedProperty.FindPropertyRelative(nameof(nodeX));
-            nodeYProperty = serializedProperty.FindPropertyRelative(nameof(nodeY));
             dataIsSet = true;
         }
 #endif
