@@ -62,8 +62,13 @@ namespace NewGraph {
         {
             // set its value to null = remove reference
             if (boundProperty == null) return;
-            boundProperty.managedReferenceValue = null;
-            boundProperty.serializedObject.ApplyModifiedProperties();
+            try
+            {
+                boundProperty.managedReferenceValue = null;
+                boundProperty.serializedObject.ApplyModifiedProperties();
+            }
+            catch (Exception e) { }
+
             Connections.ToList().ForEach((connection) => {
                 connection.RemoveFromHierarchy();
                 Disconnect(connection);

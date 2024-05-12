@@ -1,6 +1,7 @@
 ﻿using GraphViewBase;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OdinSerializer.Utilities;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -240,64 +241,32 @@ namespace NewGraph {
         /// <param name="data"></param>
         public void OnDelete(object data = null) {
 			if (graphView.IsFocusedElementNullOrNotBindable) {
-				bool isDirty = false;
+                
+                void ResetEdge(BaseEdge edge)
+                {
+                    PortView outputPort = edge.GetOutputPort() as PortView;
+                    outputPort.Disconnect(edge);
+                    PortView inputPort = edge.GetInputPort() as PortView;
+                    if(inputPort.m_Connections.Count == 1) {
+                        inputPort.Disconnect(edge);
+                    } 
+                    edge.RemoveFromHierarchy();
+                }
+                
+				graphView.ForEachSelectedEdgeDo(ResetEdge);
 
-				// go over every selected edge...
-				graphView.ForEachSelectedEdgeDo((edge) => {
-					isDirty = true;
-					// get the ouput port, this is where the referenced node sits
-					PortView outputPort = edge.GetOutputPort() as PortView;
-					outputPort.Reset();
-				});
-
-				// go over every selected node and build a list of nodes that should be deleted....
-				List<NodeModel> nodesToRemove = new List<NodeModel>();
-				List<NodeView> nodesViewsToRemove = new List<NodeView>();
-				graphView.ForEachSelectedNodeDo((node) => {
-					NodeView scopedNodeView = node as NodeView;
-					if (scopedNodeView != null) {
-						nodesToRemove.Add(scopedNodeView.controller.nodeItem);
-                        nodesViewsToRemove.Add(scopedNodeView);
-						isDirty = true;
-					}
-				});
-
-				// if we have nodes marked for deletion...
-				if (nodesToRemove.Count > 0) {
-					// tidy up all ports before actual deletion...
-					graphView.ForEachPortDo((basePort) => {
-						// we can ignore input ports, so check that we only operate on output ports...
-						if (basePort.Direction == Direction.Output) {
-							PortView port = basePort as PortView;
-							// check that the port actually is not empty...
-							if (port.boundProperty != null && port.boundProperty.managedReferenceValue != null) {
-								// loop over the list of nodes that should be removed...
-								foreach (NodeModel nodeToRemove in nodesToRemove) {
-									// if the ports actual object value is equal to a node that should be removed...
-									if (nodeToRemove.nodeData == port.boundProperty.managedReferenceValue) {
-										// reset / nullify the port value to we don't have invisible nodes in our graph...
-										port.Reset();
-										break;
-									}
-								}
-							}
-						}
-					});
-				}
-
-				// if we are dirty and objects were changed....
-				if (isDirty) {
-					// unbind and reload this graph to avoid serialization issues...
-					//graphView.Unbind();
-					//graphView.schedule.Execute(() => {
-					graphData.RemoveNodes(nodesToRemove);
-                    foreach (NodeView node in nodesViewsToRemove) {
-                        node.parent.Remove(node);
-                    }
-					//Reload();
-					//});
-				}
-			}
+				graphView.ForEachSelectedNodeDo((node) =>
+                {
+                    if (node is not NodeView scopedNodeView) return;
+                    
+                    scopedNodeView.inputPort?.m_Connections.ToList().ForEach(ResetEdge);
+                    scopedNodeView.outputPorts.ToList().ForEach(port => port.m_Connections.ToList().ForEach(ResetEdge));
+                    
+                    graphData.RemoveNode(scopedNodeView.controller.nodeItem);
+                    
+                    scopedNodeView.RemoveFromHierarchy();
+                });
+            }
         }
 
         /// <summary>
@@ -462,6 +431,13 @@ namespace NewGraph {
                     // go over every node...
                     for (int i = 0; i < nodes.Count; i++) {
                         NodeModel node = nodes[i];
+                        if (node.nodeData == null)
+                        {
+                            nodes.Remove(node);
+                            i--;
+                            continue;
+                        }
+
 
                         // initialize the node...
                         node.Initialize();

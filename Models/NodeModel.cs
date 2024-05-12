@@ -152,7 +152,7 @@ namespace NewGraph {
         }
 
         public void Initialize() {
-            nodeType = nodeData.GetType();
+            nodeType = nodeData?.GetType();
             nodeAttribute = GetNodeAttribute(nodeType);
         }
 
